@@ -1,2 +1,2 @@
 from . import dataset
-from .dataset import StoryDataset, SimilarityDataset
+from .dataset import SimilarityDataset, StoryDataset

@@ -1,21 +1,23 @@
 import glob
 import os
 import sys
-from pathlib import Path
-from dataclasses import dataclass
 from collections import Counter, defaultdict
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Dict, List, Optional
-from tqdm import tqdm
+
 from platformdirs import user_cache_dir
+from tqdm import tqdm
 
 try:
     import torch
 except ImportError:
     import numpy
+import itertools
 import json
 import random
-import itertools
 import zipfile
+
 import requests
 from datasets import Dataset
 from datasets.utils.file_utils import http_get

@@ -12,6 +12,8 @@ tqdm = "^4.66.1"
 datasets = "^2.16.1"
 platformdirs = "^4.2.0"
 
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.1.15"
