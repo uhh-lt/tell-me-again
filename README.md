@@ -3,7 +3,16 @@
 A dataset of multiple summaries for the same story.
 
 The summaries are scraped from Wikipedia and come in various languages.
-We also provide automatically created translation and anonymzied versions of the summaries (without identifiable names).
+We also provide automatically created translation and anonymized versions of the summaries (without identifiable names).
+
+
+When using this dataset please cite the following paper:
+```
+@inproceedigns{
+    TODO
+}
+```
+
 
 ## Usage
 ```python
@@ -19,4 +28,8 @@ for pair in dataset["dev"]:
     print(pair["text_a"], pair["text_b"], pair["label"])
 ```
 
-Optionally you can download the file from our website.
+Optionally you can manually download the file from [our website](https://ltdata1.informatik.uni-hamburg.de/tell_me_again.zip).
+Point the `data_path` argument in the dataset classes to the extracted zip file to use the manually downloaded copy.
+
+
+

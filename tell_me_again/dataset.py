@@ -309,10 +309,10 @@ def pair_combinations(iterable):
 
 
 class SimilarityDataset():
-    def __init__(self, path: Optional[str] = None, anonymized=True, min_sentences=0, negative_sample_scale=1.0, seed=42, min_length=0):
-        if path is None:
+    def __init__(self, data_path: Optional[str] = None, anonymized=True, min_sentences=0, negative_sample_scale=1.0, seed=42, min_length=0):
+        if data_path is None:
             data_path = download_dataset()
-        self.summary_dataset = StoryDataset(path)
+        self.summary_dataset = StoryDataset(data_path)
         splits = self.summary_dataset.perform_splits()
         self.summaries = {}
         randomizer = random.Random(seed)
