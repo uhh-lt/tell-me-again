@@ -13,6 +13,9 @@ datasets = "^2.16.1"
 platformdirs = "^4.2.0"
 
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.15"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
