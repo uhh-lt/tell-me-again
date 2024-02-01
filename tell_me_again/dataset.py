@@ -201,6 +201,7 @@ class StoryDataset:
         self.stories = stories or {}
         if len(self.stories) > 0:
             return
+        # BEWARE: the order is file system dependent
         for file_name in tqdm(
             glob.glob(str(Path(data_path) / "summaries/*/*.json")),
             desc="Loading summaries",
@@ -356,7 +357,7 @@ class StoryDataset:
             "has_isbn": has_isbn,
         }
 
-    def get_lang_stats(self, sentence_lengths=True):
+    def get_lang_stats(self):
         counter = Counter()
         counter_no_duplicates = Counter()
         length_counter = defaultdict(Counter)
@@ -364,15 +365,6 @@ class StoryDataset:
         for story in tqdm(self.stories.values()):
             counter_no_duplicates.update(story.remove_duplicates().keys())
             counter.update(story.summaries_original.keys())
-            if sentence_lengths:
-                import ersatz
-
-                for lang, summary in story.summaries_original.items():
-                    sentences = ersatz.split_text(
-                        text=summary, model=lang.replace("it", "default-multilingual")
-                    )
-                    if sentences is not None:
-                        length_counter[lang].update([len(sentences)])
             i += 1
         return {
             "languages": dict(counter),
