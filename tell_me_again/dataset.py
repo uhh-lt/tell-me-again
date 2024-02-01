@@ -22,7 +22,9 @@ import requests
 from datasets import Dataset
 from datasets.utils.file_utils import http_get
 
-DOWNLOAD_URL = "http://localhost:8080/tell_me_again.zip"
+VERSION = "v1"
+DOWNLOAD_URL = f"https://ltdata1.informatik.uni-hamburg.de/tell_me_again_{VERSION}.zip"
+
 MAX_RETRIES = 0
 TRANSLATION_SCORES = {
     "en": 100,
@@ -36,8 +38,13 @@ TRANSLATION_SCORES = {
 def download_dataset(url=DOWNLOAD_URL, retry_count: int = 0):
     cache_dir = user_cache_dir("tell_me_again", "uhh-lt")
     out_file_path = Path(cache_dir) / "data.zip"
-    if os.path.exists(cache_dir / Path("summaries")):
-        return cache_dir
+    version_file = cache_dir / Path("version.txt")
+    if os.path.exists(version_file):
+        if next(open(version_file)).strip() == VERSION:
+            return cache_dir
+        else:
+            print(f"Old version of the tell_me_again dataset found, please manually remove the files in {cache_dir}")
+            raise ValueError("Old dataset version found.")
     if retry_count > MAX_RETRIES:
         raise ValueError("Download Failed")
     os.makedirs(cache_dir, exist_ok=True)

@@ -15,6 +15,8 @@ When using this dataset please cite the following paper:
 
 
 ## Usage
+Install by running: `pip install tell_me_again`
+
 ```python
 from tell_me_again import StoryDataset, SimilarityDataset
 
@@ -28,8 +30,5 @@ for pair in dataset["dev"]:
     print(pair["text_a"], pair["text_b"], pair["label"])
 ```
 
-Optionally you can manually download the file from [our website](https://ltdata1.informatik.uni-hamburg.de/tell_me_again.zip).
+Optionally you can manually download the file from [our website](https://ltdata1.informatik.uni-hamburg.de/tell_me_again_v1.zip).
 Point the `data_path` argument in the dataset classes to the extracted zip file to use the manually downloaded copy.
-
-
-
