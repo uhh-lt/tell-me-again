@@ -31,4 +31,4 @@ for pair in dataset["dev"]:
 ```
 
 Optionally you can manually download the file from [our website](https://ltdata1.informatik.uni-hamburg.de/tell_me_again_v1.zip).
-Point the `data_path` argument in the dataset classes to the extracted zip file to use the manually downloaded copy.
+Point the `data_path` argument in the dataset classes to the zip file (with out extracting it) to use the manually downloaded copy.
