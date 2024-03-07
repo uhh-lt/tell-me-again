@@ -19,8 +19,7 @@ import random
 import zipfile
 
 import requests
-from datasets import Dataset
-from datasets.utils.file_utils import http_get
+from . import util
 
 VERSION = "v1"
 DOWNLOAD_URL = f"https://ltdata1.informatik.uni-hamburg.de/tell_me_again_{VERSION}.zip"
@@ -35,30 +34,21 @@ TRANSLATION_SCORES = {
 }
 
 
-def download_dataset(url=DOWNLOAD_URL, retry_count: int = 0):
+def download_dataset(url=DOWNLOAD_URL, retry_count: int = 0) -> Path:
     cache_dir = user_cache_dir("tell_me_again", "uhh-lt")
     out_file_path = Path(cache_dir) / "data.zip"
     version_file = cache_dir / Path("version.txt")
     if os.path.exists(version_file):
         if next(open(version_file)).strip() == VERSION:
-            return cache_dir
+            return Path(cache_dir)
         else:
             print(f"Old version of the tell_me_again dataset found, please manually remove the files in {cache_dir}")
             raise ValueError("Old dataset version found.")
     if retry_count > MAX_RETRIES:
         raise ValueError("Download Failed")
     os.makedirs(cache_dir, exist_ok=True)
-    with open(out_file_path, "wb") as out_file:
-        http_get(url, out_file)
-    try:
-        print("Extracting zip...")
-        with zipfile.ZipFile(out_file_path, "r") as zip_ref:
-            zip_ref.extractall(cache_dir)
-    except zipfile.BadZipFile as e:
-        print("Got a bad zip file, retrying.", e)
-        os.remove(out_file_path)
-        download_dataset(url, retry_count=retry_count + 1)
-    return cache_dir
+    util.download(url, out_file_path)
+    return out_file_path
 
 
 def get_genres(wikidata_dict):
@@ -194,27 +184,27 @@ class Story:
 
 
 class StoryDataset:
-    def __init__(self, data_path: Optional[str] = None, only_include=[], stories=None):
+    def __init__(self, data_path: Optional[Path] = None, only_include=[], stories=None):
         if data_path is None:
             data_path = download_dataset()
         self.data_path = data_path
         self.stories = stories or {}
         if len(self.stories) > 0:
             return
-        # BEWARE: the order is file system dependent
+        zip_file = zipfile.ZipFile(self.data_path)
         for file_name in tqdm(
-            glob.glob(str(Path(data_path) / "summaries/*/*.json")),
+            util.zip_glob(zip_file, "summaries/*/*.json"),
             desc="Loading summaries",
         ):
             wikidata_id = os.path.splitext(os.path.basename(file_name))[0]
             wikidata_data = json.load(
-                open(f"data/wikidata/{wikidata_id[:2]}/{wikidata_id}.json")
+                zip_file.open(f"wikidata/{wikidata_id[:2]}/{wikidata_id}.json")
             )
             if len(only_include) > 0 and (wikidata_id not in only_include):
                 continue
             else:
                 self.stories[wikidata_id] = Story.from_dict(
-                    json.load(open(file_name)), wikidata_data
+                    json.load(zip_file.open(file_name)), wikidata_data
                 )
 
     def __iter__(self):
@@ -246,7 +236,7 @@ class StoryDataset:
         }
 
     def chaturvedi_like_split(self, use_anonymized: bool = False, seed=1337):
-        target_length_count = {2: 235, 3: 20, 4: 10, 5: 7}
+        target_length_count = {2: 235, 3: 20, 4: 10, 5: 1}
         randomizer = random.Random(seed)
         ids = list(self.stories.keys())
         randomizer.shuffle(ids)
@@ -387,7 +377,7 @@ def pair_combinations(iterable):
 class SimilarityDataset:
     def __init__(
         self,
-        data_path: Optional[str] = None,
+        data_path: Optional[Path] = None,
         anonymized=True,
         min_sentences=0,
         negative_sample_scale=1.0,
