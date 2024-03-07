@@ -8,8 +8,12 @@ We also provide automatically created translation and anonymized versions of the
 
 When using this dataset please cite the following paper:
 ```
-@inproceedigns{
-    TODO
+@inproceedings{hatzel-etal-2024-tellme,
+    title = "Tell me again! A Large-Scale Dataset of Multiple Summaries for the Same Story"
+    booktitle = "Proceedings of the Forteenth Language Resources and Evaluation Conference",
+    author = "Hatzel, Hans Ole and Biemann, Chris",
+    address = "Turin, Italy",
+    year = "2024"
 }
 ```
 
