@@ -16,9 +16,14 @@ def download(url, out_path, description="Download"):
     """
     response = requests.get(url, stream=True)
     with tqdm.wrapattr(
-        open(out_path, "wb"), "write",
-        unit='B', unit_scale=True, unit_divisor=1024, miniters=1,
-        desc=description, total=int(response.headers.get('content-length', 0))
+        open(out_path, "wb"),
+        "write",
+        unit="B",
+        unit_scale=True,
+        unit_divisor=1024,
+        miniters=1,
+        desc=description,
+        total=int(response.headers.get("content-length", 0)),
     ) as fout:
         for chunk in response.iter_content(chunk_size=4096):
             fout.write(chunk)
