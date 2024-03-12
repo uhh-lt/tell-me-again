@@ -37,12 +37,23 @@ TRANSLATION_SCORES = {
 def download_dataset(url=DOWNLOAD_URL, retry_count: int = 0) -> Path:
     cache_dir = user_cache_dir("tell_me_again", "uhh-lt")
     out_file_path = Path(cache_dir) / "data.zip"
-    version_file = cache_dir / Path("version.txt")
-    if os.path.exists(version_file):
-        if next(open(version_file)).strip() == VERSION:
-            return Path(cache_dir)
+    if os.path.exists(out_file_path):
+        zip_file = zipfile.ZipFile(out_file_path)
+        try:
+            version_file = zip_file.open("version.txt", "r")
+        except:
+            version_file = None
+            # raise ValueError("Invalid archive (no version information present), delete the file in", cache_dir, "and run again.")
+        if (
+            version_file is not None
+            and (actual_version := next(version_file).strip().decode("utf-8"))
+            == VERSION
+        ):
+            return out_file_path
         else:
-            print(f"Old version of the tell_me_again dataset found, please manually remove the files in {cache_dir}")
+            print(
+                f"Old version of the tell_me_again dataset found (desired {VERSION} != actual version {actual_version}), please manually remove the files in {cache_dir}"
+            )
             raise ValueError("Old dataset version found.")
     if retry_count > MAX_RETRIES:
         raise ValueError("Download Failed")
