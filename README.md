@@ -4,6 +4,7 @@ A dataset of multiple summaries for the same story.
 
 The summaries are scraped from Wikipedia and come in various languages.
 We also provide automatically created translation and anonymized versions of the summaries (without identifiable names).
+For further details, check out the corresponding paper [here](https://www.inf.uni-hamburg.de/en/inst/ab/lt/publications/2024-hatzel-et-al-lrec.pdf).
 
 
 When using this dataset please cite the following paper:
