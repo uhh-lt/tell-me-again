@@ -230,9 +230,8 @@ class StoryDataset:
     def perform_splits(self):
         split_ids = {}
         for split in ["train", "dev", "test"]:
-            in_file = open(
-                self.data_path / Path(split + "_stories.csv")
-            )  # TODO: fix path
+            zip_file = zipfile.ZipFile(self.data_path)
+            in_file = zip_file.open(split + "_stories.csv")
             split_ids[split] = [l.strip() for l in in_file.readlines()]
         train_stories = {k: self.stories[k] for k in split_ids["train"]}
         dev_stories = {k: self.stories[k] for k in split_ids["dev"]}
