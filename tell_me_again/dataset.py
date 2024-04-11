@@ -232,7 +232,7 @@ class StoryDataset:
         for split in ["train", "dev", "test"]:
             zip_file = zipfile.ZipFile(self.data_path)
             in_file = zip_file.open(split + "_stories.csv")
-            split_ids[split] = [l.strip() for l in in_file.readlines()]
+            split_ids[split] = [l.decode("utf-8").strip() for l in in_file.readlines()]
         train_stories = {k: self.stories[k] for k in split_ids["train"]}
         dev_stories = {k: self.stories[k] for k in split_ids["dev"]}
         test_stories = {k: self.stories[k] for k in split_ids["test"]}
