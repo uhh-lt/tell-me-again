@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tell-me-again"
-version = "0.1.1"
+version = "0.1.2"
 description = "Dataset for the paper 'Tell me again! A Large-Scale Dataset of Multiple Summaries for the"
 authors = ["Same Story"]
 license = "MIT"
