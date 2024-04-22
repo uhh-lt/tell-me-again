@@ -165,11 +165,14 @@ class Story:
                 out[lang] = text
         return out
 
-    def get_anonymized(self, min_sentences=0):
+    def get_anonymized(self, min_sentences=0, max_sentences=float("inf")):
         return {
             lang: text
             for lang, text in self.summaries_anonymized.items()
-            if self.num_sentences[lang] >= min_sentences
+            if (
+                self.num_sentences[lang] >= min_sentences
+                and self.num_sentences[lang] <= max_sentences
+            )
         }
 
     def get_all_summaries_en(self, max_similarity=0.6, min_sentences=0):
