@@ -9,12 +9,16 @@ For further details, check out the corresponding paper [here](https://www.inf.un
 
 When using this dataset please cite the following paper:
 ```
-@inproceedings{hatzel-etal-2024-tellme,
-    title = "Tell me again! A Large-Scale Dataset of Multiple Summaries for the Same Story"
-    booktitle = "Proceedings of the Forteenth Language Resources and Evaluation Conference",
+@inproceedings{hatzel-biemann-2024-tell-large,
+    title = "Tell Me Again! a Large-Scale Dataset of Multiple Summaries for the Same Story",
     author = "Hatzel, Hans Ole and Biemann, Chris",
-    address = "Turin, Italy",
-    year = "2024"
+    booktitle = "Proceedings of the 2024 Joint International Conference on Computational Linguistics, Language Resources and Evaluation (LREC-COLING 2024)",
+    month = may,
+    year = "2024",
+    address = "Torino, Italia",
+    publisher = "ELRA and ICCL",
+    url = "https://aclanthology.org/2024.lrec-main.1366",
+    pages = "15732--15741",
 }
 ```
 
