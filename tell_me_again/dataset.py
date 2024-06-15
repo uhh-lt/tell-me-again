@@ -62,6 +62,16 @@ def download_dataset(url=DOWNLOAD_URL, retry_count: int = 0) -> Path:
     return out_file_path
 
 
+def get_property_value(wikidata_dict, property_name, value):
+    data = wikidata_dict["claims"].get(property_name, [])
+    values = [
+        e["mainsnak"]["datavalue"]["value"][value]
+        for e in data
+        if e["mainsnak"]["snaktype"] != "novalue"
+    ]
+    return values
+
+
 def get_genres(wikidata_dict):
     genres = wikidata_dict["claims"].get("P136", [])
     genre_ids = [
@@ -70,6 +80,14 @@ def get_genres(wikidata_dict):
         if e["mainsnak"]["snaktype"] != "novalue"
     ]
     return genre_ids
+
+
+def get_release_dates(wikidata_dict):
+    try:
+        dates = get_property_value(wikidata_dict, "P577", "time")
+    except KeyError:
+        dates = []
+    return dates
 
 
 @dataclass
@@ -86,13 +104,17 @@ class Story:
     num_sentences: Dict[str, int]
     sentences: Dict[str, List[str]]
     genres: List[str]
+    release_years: List[int]
 
     @classmethod
     def from_dict(cls, data, wikidata_data=None):
         if wikidata_data is not None:
             genres = get_genres(wikidata_data)
+            release_dates = get_release_dates(wikidata_data)
+            release_years = [int(date.split("-")[0][1:]) for date in release_dates]
         else:
             genres = []
+            release_years = []
         sentences = {
             k: s["sentences"]
             for k, s in data.get("en_translated_summaries", {}).items()
@@ -125,6 +147,7 @@ class Story:
             num_sentences=num_sentences,
             sentences=sentences,
             genres=genres,
+            release_years=release_years,
         )
 
     def remove_duplicates(self, threshold=0.6):
