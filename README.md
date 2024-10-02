@@ -41,3 +41,7 @@ for pair in dataset["dev"]:
 
 Optionally you can manually download the file from [our website](https://ltdata1.informatik.uni-hamburg.de/tell_me_again_v1.zip).
 Point the `data_path` argument in the dataset classes to the zip file (with out extracting it) to use the manually downloaded copy.
+
+## License
+
+The code in this repo is MIT licensed, the summaries were all scraped from Wikipedia and are Licensed (including their derived forms) under CC-BY-SA 4.0.

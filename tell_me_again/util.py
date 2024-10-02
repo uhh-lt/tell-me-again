@@ -12,7 +12,8 @@ def download(url, out_path, description="Download"):
     Downloads a given file to disk.
 
     This function is adapted from the tqdm examples.
-    It thus follows the MPL license: https://mozilla.org/MPL/2.0/.
+    It thus follows the MIT License as specified in
+    their README: https://github.com/tqdm/tqdm.
     """
     response = requests.get(url, stream=True)
     with tqdm.wrapattr(
