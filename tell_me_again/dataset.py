@@ -5,6 +5,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
+from datasets import Dataset
 
 from platformdirs import user_cache_dir
 from tqdm import tqdm
